@@ -1,8 +1,11 @@
 from vpython import sphere,vector,rate,color,mag,norm
 
-R = 0.01
-bA = sphere(pos=vector(-8*R,0.5*R,0),radius=R,color=color.yellow,make_trail=True)
-bB = sphere(pos=vector(0,0,0),radius=R,color=color.cyan,make_trail=True)
+RA = 0.01
+RB = 0.009
+RC = 0.01
+bA = sphere(pos=vector(-8*RA,0.5*RA,0),radius=RA,color=color.yellow,make_trail=True)
+bB = sphere(pos=vector(0,0,0),radius=RB,color=color.cyan,make_trail=True)
+bC = sphere(pos=vector(0,5*RC,0),radius=RC,color=color.red,make_trail=True)
 bA.m = 4
 bB.m = 1
 v0 = 0.05
@@ -14,11 +17,12 @@ dt = 0.01
 k = 500
 while t < 3:
     rate(100)
-    r = bA.pos - bB.pos
+    rAB = bA.pos - bB.pos
     F = vector(0,0,0)
     # check A collision w/ B
-    if mag(r) < 2*R:
-        F = k*(2*R-mag(r))*norm(r)
+
+    if mag(rAB) < (RA+RB):
+        F = k*((RA+RB)-mag(rAB))*norm(rAB)
     bA.p = bA.p + F*dt
     bB.p = bB.p - F*dt
     bA.pos = bA.pos + bA.p*dt/bA.m
