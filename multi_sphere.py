@@ -15,6 +15,8 @@ bA.p = bA.m*vector(0.5*v0,0,0)
 bB.p = bB.m*vector(0,0,0)
 bC.p = bC.m*vector(0,-v1,0)
 
+spheres = [bA,bB,bC]
+
 t = 0
 dt = 0.02
 k = 500
@@ -23,19 +25,24 @@ while t < 7:
     F = vector(0,0,0)
     FAB = vector(0,0,0)
     FAC = vector(0,0,0)
-    rAB = bA.pos - bB.pos
-    rAC = bA.pos - bC.pos
+    for particle in spheres:
+        for other in spheres:
+            # check each particle against each other for collisions
+            rParticle = particle.pos - other.pos
+            
+    # rAB = bA.pos - bB.pos
+    # rAC = bA.pos - bC.pos
     
     # check A collision w/ B
     if mag(rAB) < (RA+RB):      
         FAB = k*((RA+RB)-mag(rAB))*norm(rAB)
         F = FAB
-        print(F)
+        # print(F)
     # check A collision w/ C
     if mag(rAC) < (RA+RC):      
         FAC = k*((RA+RC)-mag(rAC))*norm(rAC)
         F = FAC
-        print(FAC)
+        # print(F)
     bA.p = bA.p + F*dt
     bB.p = bB.p - FAB*dt
     bC.p = bC.p - FAC*dt
