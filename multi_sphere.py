@@ -20,9 +20,9 @@ while t < 3:
     rAB = bA.pos - bB.pos
     F = vector(0,0,0)
     # check A collision w/ B
-
-    if mag(rAB) < (RA+RB):
+    if mag(rAB) < (RA+RB):      
         F = k*((RA+RB)-mag(rAB))*norm(rAB)
+        print(F)
     bA.p = bA.p + F*dt
     bB.p = bB.p - F*dt
     bA.pos = bA.pos + bA.p*dt/bA.m
