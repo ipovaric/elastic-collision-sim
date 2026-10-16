@@ -1,13 +1,26 @@
-from vpython import sphere,vector,canvas,rate,color,mag,norm
+from vpython import sphere,vector,canvas,rate,color,mag2,norm
 from random import uniform
 
 
 win = 500
 
-Nspheres = 10      # number of spheres
+Nspheres = 3      # number of spheres
 Rspheres = 0.05     # sphere radii
 
 animation = canvas(width=win*1.2,height=win,align='left')
+
+def checkOverlap(position,spheres):
+    # check specific position to see if it overlaps with any other 
+    #   positions. If there is overlap, return true, else false.
+    for s in spheres:
+        r2 = 2*Rspheres             # min dist b/w 2 spheres
+        dist = mag2(position - s.pos) # calculate distance
+        if dist < r2:
+            return True             # overlap
+        else: 
+            return False            # no overlap
+    
+
 
 # spawn spheres
 spheres = []
@@ -15,6 +28,9 @@ for i in range(1,Nspheres):
     xCenter = uniform(-0.5,0.5)
     yCenter = uniform(-0.5,0.5)
     position = vector(xCenter,yCenter,0)
+
+    olpFlag = checkOverlap(position,spheres)
+    print(olpFlag)
     spheres.append(sphere(pos=position,radius=Rspheres,color=color.red,make_trail=True))
 
 t = 0
