@@ -4,7 +4,7 @@ from random import uniform
 
 win = 500
 
-Nspheres = 3      # number of spheres
+Nspheres = 15      # number of spheres
 Rspheres = 0.05     # sphere radii
 
 animation = canvas(width=win*1.2,height=win,align='left')
@@ -12,25 +12,35 @@ animation = canvas(width=win*1.2,height=win,align='left')
 def checkOverlap(position,spheres):
     # check specific position to see if it overlaps with any other 
     #   positions. If there is overlap, return true, else false.
+    olpFlag = False                 # indicate overlap
     for s in spheres:
         r2 = 2*Rspheres             # min dist b/w 2 spheres
         dist = mag2(position - s.pos) # calculate distance
         if dist < r2:
-            return True             # overlap
-        else: 
-            return False            # no overlap
+            olpFlag = True          # overlap found
+    return olpFlag
     
 
 
 # spawn spheres
 spheres = []
-for i in range(1,Nspheres):
-    xCenter = uniform(-0.5,0.5)
-    yCenter = uniform(-0.5,0.5)
-    position = vector(xCenter,yCenter,0)
-
-    olpFlag = checkOverlap(position,spheres)
-    print(olpFlag)
+for i in range(Nspheres):
+    
+    tries = 0
+    olpFlag = True
+    while olpFlag == True:
+        # retry generating centers if there is overlap
+        xCenter = uniform(-0.5,0.5)
+        yCenter = uniform(-0.5,0.5)
+        position = vector(xCenter,yCenter,0)
+        if i == 0:
+            olpFlag = False
+        else:
+            olpFlag = checkOverlap(position,spheres)
+        print(olpFlag)
+        if tries > 10:
+            break               # break out after 10 tries
+        tries = tries + 1
     spheres.append(sphere(pos=position,radius=Rspheres,color=color.red,make_trail=True))
 
 t = 0
